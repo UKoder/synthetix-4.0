@@ -23,6 +23,7 @@
             <button class="dark-toggle" onclick="toggleDarkMode()" title="Toggle dark mode"></button>
             <a href="/" class="neu-btn" style="padding:8px 18px;font-size:13px;">💬 Chat</a>
             <a href="/admin" class="neu-btn primary" style="padding:8px 18px;font-size:13px;">⚙️ Admin</a>
+            <button class="neu-btn danger" onclick="logout()" style="padding:8px 18px;font-size:13px;">Logout</button>
         </div>
     </nav>
 
@@ -145,6 +146,16 @@
         const API = '';
         let allTickets = [];
         let currentTab = 'all';
+
+        // ── Auth Check ──
+        if (!localStorage.getItem('adminToken')) {
+            window.location.href = '/login';
+        }
+
+        function logout() {
+            localStorage.removeItem('adminToken');
+            window.location.href = '/login';
+        }
 
         // ── Dark mode ──
         function toggleDarkMode() {

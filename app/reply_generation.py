@@ -20,23 +20,21 @@ def generate_draft_reply(queue: str, ticket_type: str, priority: str,
             f"We appreciate you reaching out to our **{queue}** team.\n"
         )
 
-    # KB grounding
+    # Professional grounding
     if retrieved_docs:
         best = retrieved_docs[0]
+        # Professional conversational response
         kb_section = (
-            f"\nBased on your description, here is relevant information from our knowledge base:\n\n"
-            f"> **{best['title']}**\n> {best['snippet']}"
+            f"\nBased on the information available, {best['snippet']}"
         )
     else:
         kb_section = (
-            "\nCould you please provide more details so we can better assist you? "
-            "For example: device details, error messages received, or the steps you already tried."
+            "\nCould you please provide more details so we can assist you better? For example: device details, error messages received, or the steps you already tried."
         )
 
     # Closing
     closing = (
-        f"\n\nOur **{queue}** team will follow up shortly. "
-        f"If this is an emergency, please contact us by phone for immediate assistance."
+        f"\n\nOur **{queue}** team will review your request and follow up shortly."
         f"\n\nBest regards,\nCustomer Support Team"
     )
 

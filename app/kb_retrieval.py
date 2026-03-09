@@ -18,7 +18,7 @@ class KnowledgeBase:
         self.doc_freq = Counter()
         self.load_and_index()
 
-    def _add_doc(self, title: str, content: str, source: str):
+    def _add_doc(self, title: str, content: str, source: str, persist: bool = False):
         tokens = tokenize(content)
         self.documents.append({
             "title": title,
@@ -27,6 +27,15 @@ class KnowledgeBase:
             "source": source
         })
         self.doc_freq.update(set(tokens))
+
+        if persist:
+            safe_title = "".join(c if c.isalnum() else "_" for c in title)
+            if not os.path.exists(KB_DIR):
+                os.makedirs(KB_DIR, exist_ok=True)
+            filepath = os.path.join(KB_DIR, f"{safe_title}.txt")
+            with open(filepath, "w", encoding="utf-8") as f:
+                f.write(content)
+
 
     def load_and_index(self):
         """Load KB from two sources:

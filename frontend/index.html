@@ -29,10 +29,10 @@
   <!-- Chat Container -->
   <div class="chat-container">
     <div class="neu-card" style="padding:0;overflow:hidden;">
-      <div style="padding:20px 24px;background:linear-gradient(135deg,var(--primary),var(--accent));color:white;">
-        <h2 style="font-size:18px;font-weight:600;">Customer Support Assistant</h2>
-        <p style="font-size:13px;opacity:0.85;margin-top:4px;">Ask me anything — I'll help or connect you with our team.
-        </p>
+      <div style="padding:24px 24px;border-bottom:1px solid var(--border-color);background:var(--surface);">
+        <h2 style="font-size:20px;font-weight:700;letter-spacing:-0.5px;color:var(--text);">Support Assistant</h2>
+        <p style="font-size:14px;opacity:0.8;margin-top:6px;color:var(--text-light);">Ask me anything — I'll help or
+          connect you with our team.</p>
       </div>
 
       <!-- Chat Messages -->
@@ -92,7 +92,7 @@
       avatar.textContent = type === 'user' ? '👤' : '🤖';
       const bubble = document.createElement('div');
       bubble.className = 'bubble';
-      bubble.textContent = text;
+      bubble.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
       if (type === 'user') {
         div.appendChild(bubble);
         div.appendChild(avatar);
@@ -179,12 +179,7 @@
       document.getElementById('sendBtn').disabled = true;
       addTypingIndicator();
 
-      let subject = text, body = text;
-      if (text.includes('\n')) {
-        const lines = text.split('\n');
-        subject = lines[0];
-        body = lines.slice(1).join('\n');
-      }
+      let subject = text, body = "";
 
       try {
         const res = await fetch(`${API}/api/triage`, {

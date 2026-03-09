@@ -52,6 +52,10 @@ class AdminSettingsRequest(BaseModel):
     response_hours: Optional[int] = None
     confidence_threshold: Optional[float] = None
 
+class AdminLoginRequest(BaseModel):
+    username: str
+    password: str
+
 
 # ─── Health ──────────────────────────────────────────────────────────
 @app.get("/api/health", tags=["Health"])
@@ -140,6 +144,14 @@ def get_ticket(ticket_id: str):
     }
 
 
+# ─── Admin: Login ───────────────────────────────────────────────────
+@app.post("/api/admin/login", tags=["Admin"])
+def admin_login(req: AdminLoginRequest):
+    if req.username == "admin124" and req.password == "admin":
+        return {"success": True, "token": "mock-jwt-token-7x92v"}
+    return {"success": False, "error": "Invalid credentials"}
+
+
 # ─── Admin: Get all tickets ─────────────────────────────────────────
 @app.get("/api/admin/tickets", tags=["Admin"])
 def admin_get_tickets():
@@ -222,6 +234,10 @@ FRONTEND_DIR = os.path.join(os.path.dirname(__file__), "..", "frontend")
 @app.get("/", tags=["Frontend"])
 def serve_home():
     return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+
+@app.get("/login", tags=["Frontend"])
+def serve_login():
+    return FileResponse(os.path.join(FRONTEND_DIR, "login.html"))
 
 @app.get("/admin", tags=["Frontend"])
 def serve_admin():
