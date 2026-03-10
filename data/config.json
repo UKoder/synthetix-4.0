@@ -1,0 +1,62 @@
+{
+  "company_name": "Generic Support Inc.",
+  "bot_name": "Customer Support Bot",
+  "admin_response_hours_default": 2,
+  "queues": {
+    "Technical Support": [
+        "technical", "error", "bug", "crash", "not working", "driver", "firmware",
+        "connectivity", "network", "hardware", "software", "device", "printer",
+        "wifi", "vpn", "server", "system failure", "outage", "configuration"
+    ],
+    "Billing & Accounts": [
+        "billing", "invoice", "payment", "charge", "refund", "subscription",
+        "credit card", "overcharge", "discrepancy", "receipt", "due", "fee", "late", "account", "profile"
+    ],
+    "Sales & Pre-Sales": [
+        "pricing", "quote", "purchase", "buy", "sales", "pre-sales", "trial",
+        "demo", "discount", "proposal", "offer", "cost"
+    ],
+    "Product Support": [
+        "product", "feature", "specification", "documentation", "manual",
+        "integration", "api", "compatibility", "setup", "install"
+    ],
+    "General Inquiry": [
+        "general", "info", "curious", "policy", "procedure", "how to", "guidance", "question", "inquiry"
+    ]
+  },
+  "types": {
+    "Incident": [
+        "urgent", "emergency", "failure", "failed", "down", "crash", "cannot access",
+        "disruption", "outage", "blocked", "not responding", "data loss"
+    ],
+    "Problem": [
+        "problem", "issue", "incorrect", "broken", "intermittent", "error", "bug",
+        "slow", "unexpected", "not working", "discrepancy"
+    ],
+    "Request": [
+        "request", "inquiry", "information", "how to", "provide", "details",
+        "documentation", "feature request", "query", "question"
+    ]
+  },
+  "priorities": {
+    "high": [
+        "urgent", "emergency", "asap", "critical", "immediately", "severe",
+        "not working", "complete failure", "system down", "outage", "halt", "blocked"
+    ],
+    "medium": [
+        "issue", "problem", "help", "error", "broken", "slow", "intermittent",
+        "connectivity", "access", "disrupted"
+    ],
+    "low": [
+        "inquiry", "request", "feedback", "information", "question", "how to",
+        "suggestion", "general", "details", "curious"
+    ]
+  },
+  "reply_templates": {
+    "high_priority_greeting": "Reaching out regarding '{subject}'? We recognize the urgency of this request and are treating it as a **high-priority** matter.",
+    "medium_priority_greeting": "Thank you for contacting us about '{subject}'. We have logged this as a **{ticket_type}** and are actively looking into it.",
+    "low_priority_greeting": "Thank you for your message regarding '{subject}'. We appreciate you reaching out to our **{queue}** team.",
+    "fallback_request_more_info": "Could you please provide more details so we can assist you better? For example: context, steps taken, or specific requirements.",
+    "closing": "Our **{queue}** team will review your request and follow up shortly.\n\nBest regards,\nThe {company_name} Support Team"
+  }
+}

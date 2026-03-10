@@ -75,3 +75,22 @@ This will automatically build the image and start the service with the defined v
 
 > [!IMPORTANT]
 > **Data Persistence:** If you use `docker run`, your data files inside the container might be lost when the container is deleted. Use Method 3 (Docker Compose) if you want to keep data synced with local folders.
+
+---
+
+## Customizing for Your Business
+
+This bot is entirely domain-agnostic. You can easily adapt it to the specific needs of your company without editing any Python code!
+
+### 1. Edit the Configuration File
+Open `data/config.json`. You can modify the following fields to fit your industry (such as Retail, Healthcare, SaaS, etc.):
+- `company_name`: The name used in support signatures (e.g., "Generic Support Inc.").
+- `queues`: Define custom queues (e.g., "Returns & Exchanges", "Sizing Advice") and provide keywords that trigger them.
+- `types`: Define how to classify tickets based on keywords (e.g., "Incident" vs. "Request").
+- `priorities`: Adjust rules for determining high, medium, and low priority tickets.
+- `reply_templates`: Edit the automated AI responses and fallback messages based on priority.
+
+### 2. Populate the Knowledge Base
+To allow the AI to answer common customer inquiries, drop any `.txt` or `.md` files into the `data/knowledge_base/` folder.
+- The AI uses Retrieval-Augmented Generation (RAG) to scan these files.
+- The more thorough your documentation, the better the AI can help your users!

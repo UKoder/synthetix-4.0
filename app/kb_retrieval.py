@@ -52,9 +52,9 @@ class KnowledgeBase:
                     if content:
                         self._add_doc(filename, content, filename)
 
-        # Source 2: HuggingFace dataset — build representative answers per queue
+        # Source 2: HuggingFace dataset — build representative answers per queue (Optional/Generic)
         if os.path.exists(HF_TICKETS_PATH):
-            print("Loading HuggingFace KB answers from dataset...")
+            print("Loading fallback/historical dataset answers (if present)...")
             with open(HF_TICKETS_PATH, 'r', encoding='utf-8') as f:
                 tickets = json.load(f)
 

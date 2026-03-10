@@ -1,24 +1,31 @@
+import os
+import json
+
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "config.json")
+
+def load_config():
+    with open(CONFIG_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
 def generate_draft_reply(queue: str, ticket_type: str, priority: str,
                          retrieved_docs: list, subject: str) -> str:
     """
-    Generates a grounded draft reply using the ticket metadata and retrieved KB snippets.
+    Generates a grounded draft reply using the config templates and retrieved KB snippets.
     """
+    config = load_config()
+    templates = config.get("reply_templates", {})
+    company_name = config.get("company_name", "Our Company")
+
     # Opening based on priority
     if priority == "high":
-        opening = (
-            f"Hello,\n\nThank you for reaching out. We recognize the urgency of your request "
-            f"regarding '{subject}' and we are treating this as a **high-priority** matter.\n"
-        )
+        opening = "Hello,\n\n" + templates.get("high_priority_greeting", "We recognize the urgency of this request.") + "\n"
     elif priority == "medium":
-        opening = (
-            f"Hello,\n\nThank you for contacting us about '{subject}'. "
-            f"We have logged this as a **{ticket_type}** and are actively looking into it.\n"
-        )
+        opening = "Hello,\n\n" + templates.get("medium_priority_greeting", "We have logged this issue and are looking into it.") + "\n"
     else:
-        opening = (
-            f"Hello,\n\nThank you for your message regarding '{subject}'. "
-            f"We appreciate you reaching out to our **{queue}** team.\n"
-        )
+        opening = "Hello,\n\n" + templates.get("low_priority_greeting", "We appreciate you reaching out.") + "\n"
+
+    # String format the opening
+    opening = opening.format(subject=subject, ticket_type=ticket_type, queue=queue)
 
     # Professional grounding
     if retrieved_docs:
@@ -28,14 +35,9 @@ def generate_draft_reply(queue: str, ticket_type: str, priority: str,
             f"\nBased on the information available, {best['snippet']}"
         )
     else:
-        kb_section = (
-            "\nCould you please provide more details so we can assist you better? For example: device details, error messages received, or the steps you already tried."
-        )
+        kb_section = "\n" + templates.get("fallback_request_more_info", "Could you provide more details?")
 
     # Closing
-    closing = (
-        f"\n\nOur **{queue}** team will review your request and follow up shortly."
-        f"\n\nBest regards,\nCustomer Support Team"
-    )
+    closing = "\n\n" + templates.get("closing", "Best regards,\nThe {company_name} Support Team").format(queue=queue, company_name=company_name)
 
     return opening + kb_section + closing
