@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+data/hf_tickets.json
+test_out.txt
+dl_out.txt
+hf_out.txt
+output.txt
+results.json
