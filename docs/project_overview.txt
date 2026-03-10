@@ -1,0 +1,59 @@
+==================================================
+        CUSTOMER SUPPORT BOT - OVERVIEW
+==================================================
+
+1. INTRODUCTION & SUMMARY
+--------------------------------------------------
+The Customer Support Bot is an AI-powered ticket triage system designed to handle incoming user requests, categorize them securely, and respond to common inquiries automatically using a Knowledge Base (KB).
+
+What differentiates this project is its domain-agnostic design. Everything from ticket queues, priorities, categorization keywords, and AI reply templates is decoupled from Python and managed in a central configuration file. This allows any company to quickly adapt the bot to their specific industry (e.g., healthcare, retail, SaaS) without touching code.
+
+2. ARCHITECTURE
+--------------------------------------------------
+The system is built on a simple Client-Server architecture with a clean separation of concerns:
+
+- Frontend (Client): Lightweight HTML/CSS/JS files serving the Customer Chat UI (for submitting tickets) and the Admin Dashboard UI (for reviewing tickets, responding, and tracking metrics).
+- API Layer: A FastAPI backend defining REST endpoints (`/api/triage`, `/api/ticket/{id}`, `/api/admin/reply`) to bridge the frontend UI and the engine.
+- Categorization Engine: Analyzes incoming tickets against `data/config.json` rules to dynamically map tickets into queues ("General", "Sales", "Support") and determine priority ("high", "medium", "low").
+- KB Retrieval Engine (RAG): Uses Term Frequency-Inverse Document Frequency (TF-IDF) to search through `.txt`/`.md` documents in `data/knowledge_base/` for relevant contextual information.
+- Generation Engine: Formats responses utilizing localized templates combined with retrieved snippet data, or hands the ticket off to human administrators securely if its confidence threshold is low.
+
+3. TECH STACK
+--------------------------------------------------
+- Backend Framework: FastAPI (Python)
+- Core Logic Modules: zipfile, xml.etree, math, collections (Standard Python Library - minimal dependencies)
+- Frontend: Vanilla HTML, CSS, JavaScript (No complex frameworks like React/Vue, ensuring easy maintainability)
+- Containerization: Docker & Docker Compose
+- State Management: In-memory dictionary store (designed to be easily swapped for PostgreSQL/Redis in production)
+- Web Server: Uvicorn API Server
+
+4. SYSTEM LOGIC
+--------------------------------------------------
+1. Ticket Submission: Customer submits a subject and body via the frontend.
+2. Cleansing: The system sanitizes strings by stripping whitespace and irrelevant characters.
+3. Categorization: Keyword-matching identifies the most relevant ticket queue and priority using `data/config.json`.
+4. RAG Retrieval: The system tokenizes the query and scans local KB documents (or optional HuggingFace historical data) to find top matching snippets using TF-IDF scoring.
+5. Decision Branching:
+     a. If KB retrieval confidence > Threshold -> Generate AI reply template + snippet.
+     b. If KB retrieval confidence < Threshold -> Defer to human admin and provide a fallback "we will review this soon" message.
+6. Admin Resolution: Admin reviews pending tickets, responds, and their answer is actively indexed back into the KB to enable the AI to autonomously resolve identical future queries.
+
+5. INSTRUCTIONS / SETUP
+--------------------------------------------------
+[Prerequisites]
+- Docker Desktop or Python 3.9+ installed.
+
+[Running Locally with Python]
+1. Open a terminal in the root directory.
+2. Install dependencies: `pip install -r requirements.txt`
+3. Boot the server: `uvicorn app.main:app --reload`
+4. Access Customer Chat: http://127.0.0.1:8000
+5. Access Admin Panel: http://127.0.0.1:8000/admin (Default Login: admin124 / admin)
+
+[Running with Docker Compose]
+1. `docker-compose up --build`
+2. Access the site on http://localhost:8000
+
+[Customizing For Your Business]
+1. Configuration: Modify `data/config.json` to change ticket categories, queues, priority tiers, and response templates.
+2. Knowledge Base: Paste any relevant company manuals, procedures, or PDFs (converted to text) into `data/knowledge_base/` as `.txt` files. The bot will automatically vectorize them on the next reboot.
