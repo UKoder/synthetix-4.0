@@ -1,6 +1,6 @@
 # Docker Deployment Guide: Moving to Another PC
 
-This guide explains how to take your `synthetix 4.0` project and run it on a different computer using Docker.
+This guide explains how to take your `Customer-Support-Bot` project and run it on a different computer using Docker.
 
 ## Prerequisites on the Destination PC
 1. **Docker Desktop** (or Docker Engine) must be installed.
